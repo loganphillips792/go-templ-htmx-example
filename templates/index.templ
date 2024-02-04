@@ -1,0 +1,29 @@
+package templates
+
+import (
+	"github.com/loganphillips792/golang-todo/model"
+)
+
+templ Index(todos []*model.Todo) {
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<title>Golang TODO</title>
+			<link href="/css/output.css" rel="stylesheet"/>
+		</head>
+		<body>
+			<div class="h-screen w-screen bg-black flex flex-col justify-center items-center">
+				@Hello("John")
+			</div>
+			<h1 class="text-8xl font-black text-center m-0 pb-2">Todos</h1>
+			<div>
+				<ul>
+					for _, item := range todos {
+						<li>{ item.Text }</li>
+					}
+				</ul>
+			</div>
+			// { children... }
+		</body>
+	</html>
+}
