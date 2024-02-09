@@ -6,6 +6,10 @@ import (
 	"log/slog"
 )
 
+type SqlLiteGateway interface {
+	GetAllTodos() ([]*model.Todo, error)
+}
+
 type TodosGateway struct {
 	Logger        *slog.Logger
 	DbConn *sqlx.DB
@@ -18,7 +22,7 @@ func NewTodosDatabaseGateway(log *slog.Logger, db *sqlx.DB) TodosGateway {
 	}
 }
 
-func(gateway TodosGateway) GetAllTodos() []*model.Todo {
+func(gateway TodosGateway) GetAllTodos() ([]*model.Todo, error) {
 	gateway.Logger.Info("GetAllTodos")
 
 	query := "SELECT * FROM todos"
@@ -48,5 +52,5 @@ func(gateway TodosGateway) GetAllTodos() []*model.Todo {
 		}
 		todos = append(todos, todo)
 	}
-	return todos
+	return todos, nil
 }

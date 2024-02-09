@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/loganphillips792/golang-todo/model"
+	"github.com/loganphillips792/golang-todo/gateways"
 	"log/slog"
 )
 
@@ -9,6 +10,7 @@ type Todos []*model.Todo
 
 type TodosService struct {
 	Log        *slog.Logger
+	DbGateway gateways.SqlLiteGateway
 }
 
 func NewTodosService(log *slog.Logger) TodosService {
@@ -18,10 +20,8 @@ func NewTodosService(log *slog.Logger) TodosService {
 }
 
 func (t TodosService) GetAllTodos() ([]*model.Todo, error)  {
-	return []*model.Todo{
-		{
-			Id: 5,
-			Text: "This is the first item on our list",
-		},
-	}, nil
+
+	todos, _ := t.DbGateway.GetAllTodos()
+
+	return todos, nil
 }
