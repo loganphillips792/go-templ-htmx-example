@@ -32,11 +32,11 @@ func(gateway TodosGateway) GetAllTodos() ([]*model.Todo, error) {
 		"SQL", query,
 	)
 
-	rows, err := t.DbConn.Query(query)
+	rows, err := gateway.DbConn.Query(query)
 
 	if err != nil {
-		gateway.Logger.Info(err)
-		gateway.Logger.Error(err)
+		gateway.Logger.Info(err.Error())
+		gateway.Logger.Error(err.Error())
 	}
 
 	defer rows.Close()
@@ -48,7 +48,7 @@ func(gateway TodosGateway) GetAllTodos() ([]*model.Todo, error) {
 		err := rows.Scan(&todo.Id, &todo.Text, &todo.Checked)
 
 		if err != nil {
-			gateway.Logger.Error(err)
+			gateway.Logger.Error(err.Error())
 		}
 		todos = append(todos, todo)
 	}
