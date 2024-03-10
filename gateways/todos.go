@@ -1,9 +1,11 @@
 package gateways
 
 import (
-	"github.com/loganphillips792/golang-todo/model"
-	"github.com/jmoiron/sqlx"
+	"fmt"
 	"log/slog"
+
+	"github.com/jmoiron/sqlx"
+	"github.com/loganphillips792/golang-todo/model"
 )
 
 type SqlLiteGateway interface {
@@ -44,7 +46,8 @@ func(gateway TodosGateway) GetAllTodos() ([]*model.Todo, error) {
 	var todos []*model.Todo
 
 	for rows.Next() {
-		var todo *model.Todo
+		var todo model.Todo
+		fmt.Printf("%v\n", todo)
 		err := rows.Scan(&todo.Id, &todo.Text, &todo.Checked)
 
 		if err != nil {

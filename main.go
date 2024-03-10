@@ -2,19 +2,21 @@ package main
 
 import (
 	"context"
+	"fmt"
 
+	"database/sql"
+	"errors"
+	"log/slog"
+	"os"
+
+	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	"github.com/loganphillips792/golang-todo/config"
+	"github.com/loganphillips792/golang-todo/gateways"
 	"github.com/loganphillips792/golang-todo/handlers"
 	"github.com/loganphillips792/golang-todo/services"
 	"github.com/loganphillips792/golang-todo/templates"
-	"github.com/loganphillips792/golang-todo/config"
-	"log/slog"
-	"errors"
-	"os"
-	"database/sql"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-
 )
 
 func main() {
@@ -37,10 +39,12 @@ func main() {
 	e := echo.New()
 
 
-	// initialize gateway
+	// initialize gateway to pass to service
+	gateway := gateways.NewTodosDatabaseGateway(logger, db)
 
-
-	service := services.NewTodosService(logger)
+	// initialize service to pass to handlerx
+	service := services.NewTodosService(logger, gateway)
+	
 	handler := handlers.NewHandler(logger, service)
 
 	// handlers.SetupRoutes(e, handler)
@@ -111,5 +115,6 @@ func initializeDatabase() *sqlx.DB {
 		}
 
 	}
+
 	return sqlxDb
 }

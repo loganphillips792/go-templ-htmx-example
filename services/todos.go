@@ -13,9 +13,10 @@ type TodosService struct {
 	DbGateway gateways.SqlLiteGateway
 }
 
-func NewTodosService(log *slog.Logger) TodosService {
+func NewTodosService(log *slog.Logger, gateway gateways.SqlLiteGateway) TodosService {
 	return TodosService{
 		Log: log,
+		DbGateway: gateway,
 	}
 }
 
